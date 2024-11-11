@@ -1,0 +1,349 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prototype 1(Pro1)</title>
+    <style>
+        body {
+            font-family: Times New Roman, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        nav {
+            background-color: #333;
+            padding: 10px;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        nav ul li {
+            margin-right: 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+        nav ul li a:hover {
+            background-color: #575757;
+        }
+        main {
+            padding: 20px;
+        }
+        .clickable-heading {
+            cursor: pointer;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            display: block;
+            margin-top: 10px;
+        }
+        .clickable-heading:hover {
+            background-color: #0056b3;
+        }
+
+        #homeTab, #contactTab, #signTab {
+            width: 300px;
+            max-height: 350px;
+            background-color: #f4f4f4;
+            position: absolute;
+            top: 50px;
+            left: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+            padding: 10px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+        #homeTab h2, #contactTab h2, #signTab h2 {
+            margin-top: 0;
+        }
+        .close-tab {
+            cursor: pointer;
+            color: red;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        #contactForm input, #contactForm textarea, #signUpForm input, #signInForm input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        #contactForm button, #signUpForm button, #signInForm button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #contactForm button:hover, #signUpForm button:hover, #signInForm button:hover {
+            background-color: #218838;
+        }
+
+        #aboutOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        #aboutOverlay .overlay-content {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+        }
+        #aboutOverlay .close-overlay {
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: red;
+            font-size: 20px;
+            background: none;
+            border: none;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .hidden-content {
+            display: none;
+            padding-left: 20px;
+        }
+    </style>
+    <script>
+        function toggleHomeTab() {
+            const homeTab = document.getElementById('homeTab');
+            homeTab.style.display = (homeTab.style.display === 'none' || homeTab.style.display === '') ? 'block' : 'none';
+        }
+
+        function closeHomeTab() {
+            document.getElementById('homeTab').style.display = 'none';
+        }
+
+        function toggleSchoolWorks() {
+            const schoolWorksContent = document.getElementById('schoolWorksContent');
+            schoolWorksContent.style.display = (schoolWorksContent.style.display === 'none' || schoolWorksContent.style.display === '') ? 'block' : 'none';
+        }
+        
+        function toggleWalaLang() {
+            const walaLangContent = document.getElementById('walaLangContent');
+            walaLangContent.style.display = (walaLangContent.style.display === 'none' || walaLangContent.style.display === '') ? 'block' : 'none';
+        }
+
+        function toggleSubSection(subSectionId) {
+            const subSection = document.getElementById(subSectionId);
+            subSection.style.display = (subSection.style.display === 'none' || subSection.style.display === '') ? 'block' : 'none';
+        }
+
+        function openAboutOverlay() {
+            document.getElementById('aboutOverlay').style.display = 'flex';
+        }
+
+        function closeAboutOverlay() {
+            document.getElementById('aboutOverlay').style.display = 'none';
+        }
+
+        function openContactTab() {
+            document.getElementById('contactTab').style.display = 'block';
+        }
+
+        function closeContactTab() {
+            document.getElementById('contactTab').style.display = 'none';
+        }
+
+        function toggleTab(tabId) {
+            const tab = document.getElementById(tabId);
+            tab.style.display = (tab.style.display === 'none' || tab.style.display === '') ? 'block' : 'none';
+        }
+
+        function showForm(formType) {
+            document.getElementById('signUpForm').style.display = (formType === 'signUp') ? 'block' : 'none';
+            document.getElementById('signInForm').style.display = (formType === 'signIn') ? 'block' : 'none';
+        }
+
+        function closeTab(tabId) {
+            document.getElementById(tabId).style.display = 'none';
+        }
+    </script>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="javascript:void(0);" onclick="toggleHomeTab()">Home</a></li>
+            <li><a href="javascript:void(0);" onclick="openAboutOverlay()">About</a></li>
+            <li><a href="javascript:void(0);" onclick="openContactTab()">Contact</a></li>
+            <li><a href="javascript:void(0);" onclick="toggleTab('signTab')">Sign Up / Sign In</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h1>Welcome Wala ka nag notes no? Mao Lagi na ba</h1>
+ <b1>Click "About" for more Information</b1>
+<!-- Additional content can be added here -->
+    <p>Learn more about Pro1 and How to view and dowload file or play mini games by visiting the "About" page.</p>
+    </main>
+
+    <!-- Small tab for Home content -->
+    <div id="homeTab">
+        <span class="close-tab" onclick="closeHomeTab()">x</span>
+        <h2>Home</h2>
+        
+        <h3 class="clickable-heading" onclick="toggleSchoolWorks()">1. School Works</h3>
+        <div id="schoolWorksContent" class="hidden-content">
+            <h4 class="clickable-heading" onclick="toggleSubSection('geneticsContent')">1.1 Genetics</h4>
+            <div id="geneticsContent" class="hidden-content">
+               <a href="C:\Users\Administrator\Documents\School works\Genetics\TheLifeofGregorMendel2.pdf" download>LifeofGregorMendel</a>
+ <a href="C:\Users\Administrator\Documents\School works\Genetics\MENDELIAN-LAWS-OF-INHERITANCE.pptx" download>MendelianLawofGenetics</a>
+ <a href="C:\Users\Administrator\Downloads\Pedigree-Analysis.pptx" download>PedigreeAnalysispowerpoint</a>
+ <a href="C:\Users\Administrator\Downloads\Replication.pptx.pptx" download>DnaReplicationprokaryotesEukaryotes</a>
+<a href="C:\Users\Administrator\Downloads\genetics.pdf" download>GeneticsReviewer1</a>
+<a href="C:\Users\Administrator\Downloads\genetics reviewer.pdf" download>Geneticsreviewer2</a>
+<a href="C:\Users\Administrator\Documents\School works\Genetics\Transcription.pptx" download>Genetranscription</a>
+
+            </div>
+            <h4 class="clickable-heading" onclick="toggleSubSection('plantGrowthContent')">1.2 Plant Growth</h4>
+            <div id="plantGrowthContent" class="hidden-content">
+              <p>No Content Available As of the moment</p>
+
+            </div>
+            <h4 class="clickable-heading" onclick="toggleSubSection('fernsContent')">1.3 Ferns, Mosses, and Epiphytes</h4>
+            <div id="fernsContent" class="hidden-content">
+<p>Way PPT kay di manghatag PPt sir!</p>
+                <a href="C:\Users\Administrator\Documents\Pro!-Trial\Display.html" target="_blank">Ferns Notes</a>
+
+            </div>
+            <h4 class="clickable-heading" onclick="toggleSubSection('cellBioContent')">1.4 Cell and Molecular Bio</h4>
+            <div id="cellBioContent" class="hidden-content">
+                <a href="C:\Users\Administrator\Documents\School works\Microbio\Chapter-2-Components-of-the-Cell (1).pptx" download>ComponentsOfCell</a>
+<a href="C:\Users\Administrator\Documents\School works\CellAndMolecular\Lesson-2-the-discovery-of-cells-revised.pptx" download>CellDiscoveryPresentation</a>
+<a href="C:\Users\Administrator\Documents\School works\CellAndMolecular\cell-energy.ppt" download>CellEnergyPresentation</a>
+<a href="C:\Users\Administrator\Documents\School works\CellAndMolecular\Cell-Cycle-Cell-Division.pptx" download>CellCycle/CellDivision</a>
+<a href="C:\Users\Administrator\Documents\School works\CellAndMolecular\Stages-of-Cell-Mitosis.pptx" download>StagesOfCell(Mitosis)</a>
+<a href="C:\Users\Administrator\Downloads\Stages-of-Meiosis.pptx" download>StagesOfCell(Meiosis)</a>
+<a href="C:\Users\Administrator\Downloads\Significance-of-Mitosis-Meiosis.pptx" download>SignificanceofCellDivision</a>
+<a href="C:\Users\Administrator\Downloads\Disorders-Diseases-NC.pptx" download>DisordersAndDiseases</a>
+<a href="C:\Users\Administrator\Downloads\cell-molecular-report-1.pptx" download>GeneExpressionAndDisorders</a>
+<a href="C:\Users\Administrator\Downloads\CELL-BIO-REPORTER-2.-JHEA-BALLON-1.pptx" download>CellularTransportation</a>
+
+            </div>
+            <h4 class="clickable-heading" onclick="toggleSubSection('microbiologyContent')">1.5 Microbiology</h4>
+            <div id="microbiologyContent" class="hidden-content">
+               <a href="C:\Users\Administrator\Documents\School works\Microbio\Lesson-1-the-microbial-world.pptx" download>MicrobialWorld</a>
+<a href="C:\Users\Administrator\Documents\School works\CellAndMolecular\cell-energy.ppt" download>CellEnergyPresentation</a>
+<a href="C:\Users\Administrator\Documents\School works\Microbio\Lesson-1-unity-diversity-of-life.ppt" download>UnityDiversityofLife</a>
+<a href="C:\Users\Administrator\Documents\School works\Microbio\Lesson-2-discovery-of-microorganisms.pptx" download>DiscoveryOfMicroorganisms</a>
+<a href="C:\Users\Administrator\Documents\School works\Microbio\Lesson-3-industrial-microbiology.pptx" download>IndustrialMicrobiology</a>
+<a href="C:\Users\Administrator\Documents\School works\Microbio\Lesson-3-prokaryotic-cell.pptx" download>ProkaryoticCell</a>
+<a href="C:\Users\Administrator\Documents\School works\Microbio\Lesson-4-eucaryotic-cell.pptx" download>EukaryoticCell</a>
+<a href="C:\Users\Administrator\Documents\School works\Microbio\Lesson-4-Recent-Advances-in-Microbiology.pptx" download>AdvancementInMicrobiology</a>
+<a href="C:\Users\Administrator\Documents\School works\Microbio\Lesson-5-difference-between-prokaryotes-and-eucaryotes.pptx" download>ProkaryotesVsEukaryotes</a>
+ <a href="C:\Users\Administrator\Documents\microbial-taxonomy.pptx" download>MicrobialTaxonomy</a>
+ <a href="C:\Users\Administrator\Downloads\Microbial Genetics.pptx" download>MicrobialGenetics</a>
+ <a href="C:\Users\Administrator\Downloads\INTRODUCTION-TO-VIRUSES.pptx" download>IntroductionToViruses</a>
+
+            </div>
+        </div>
+
+        <h3 class="clickable-heading" onclick="toggleWalaLang()">2. Wala Lang</h3>
+        <div id="walaLangContent" class="hidden-content">
+           <a href="C:\Users\Administrator\Documents\Pro!-Trial\sign.html"_blank">Wanna Play Game?</a>
+<a href="https://1drv.ms/o/c/94390d2e136f2455/EtLfgNxiXLxMnUqwlNTgBWsBeRU6E_TK0XaX8O9TZpSGxQ">Wanna Read Notes?</a>
+
+        </div>
+    </div>
+
+    <!-- Contact Tab -->
+    <div id="contactTab" style="display: none;">
+        <span class="close-tab" onclick="closeContactTab()">X</span>
+        <h2>Contact</h2>
+        <form id="contactForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" required></textarea>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <!-- Sign Up / Sign In Tab -->
+    <div id="signTab">
+        <span class="close-tab" onclick="closeTab('signTab')">X</span>
+        <h2>Sign Up / Sign In</h2>
+        <button onclick="showForm('signUp')">Sign Up</button>
+        <button onclick="showForm('signIn')">Sign In</button>
+        <div id="signUpForm" style="display: none;">
+            <h3>Sign Up</h3>
+            <form>
+                <label for="signupName">Name:</label>
+                <input type="text" id="signupName" name="signupName" required>
+                <label for="signupEmail">Email:</label>
+                <input type="email" id="signupEmail" name="signupEmail" required>
+                <label for="signupPassword">Password:</label>
+                <input type="password" id="signupPassword" name="signupPassword" required>
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+        <div id="signInForm" style="display: none;">
+            <h3>Sign In</h3>
+            <form>
+                <label for="signinEmail">Email:</label>
+                <input type="email" id="signinEmail" name="signinEmail" required>
+                <label for="signinPassword">Password:</label>
+                <input type="password" id="signinPassword" name="signinPassword" required>
+                <button type="submit">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- About Overlay -->
+    <div id="aboutOverlay">
+        <div class="overlay-content">
+            <button class="close-overlay" onclick="closeAboutOverlay()">X</button>
+            <h2>About Pro1/How to use</h2>
+            <p>This website serves as an example of how to create a simple, interactive web page with clickable content sections.To access file of your choice click nang "Home" select dayon ug subject of your choice then click the file you want.</p>
+<p>To Access One notes and to play Mini Game Click "Wala Lang" and select activity you want</p>
+
+            <p>Mao na paminaw lagi para di mag sig pasend ppt Charot (Katong Gulay).</p>
+        </div>
+    </div>
+
+<body>
+    <h1>Trial</h1>
+    <img src="https://static.wikia.nocookie.net/honor-of-kings/images/1/14/Garo-circle-big.png/revision/latest?cb=20241105035036" alt="Garo Crushie cakes" width="300" height="auto">
+</body>
+</html>
+
+    <footer>
+        &copy; Sig Pangayog Ppt lagi ba
+    </footer>
+</body>
+</html>
