@@ -7,23 +7,40 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #F4E3D7; /* Soft beige background */
-            color: #5A3D2B; /* Earth-tone brown color */
+            background: linear-gradient(to bottom, #FFFFFF, #D8B77D); /* White to light brown gradient */
+            color: #3E2A47; /* Deep brown text color */
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
+            justify-content: space-between;
             height: 100vh;
             margin: 0;
         }
+        header {
+            background-color: #B68C4B; /* Rich golden brown header */
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+        }
+        footer {
+            background-color: #B68C4B; /* Golden brown footer */
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
         .container {
             text-align: center;
+            flex: 1; /* Allows the container to take up available space between header and footer */
         }
         h1 {
             margin-bottom: 20px;
-            color: #5A3D2B;
+            color: #3E2A47; /* Deep brown text color */
         }
         button {
-            background-color: #A67B5B; /* Earth-tone brown button */
+            background-color: #B68C4B; /* Golden brown button */
             color: #FFFFFF;
             border: none;
             padding: 12px 20px;
@@ -34,7 +51,7 @@
             transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #8B5E40; /* Darker brown on hover */
+            background-color: #9E7A4B; /* Slightly darker golden brown on hover */
         }
         a {
             text-decoration: none;
@@ -43,8 +60,8 @@
         /* Floating tab styles */
         .floating-tab {
             display: none;
-            background-color: #F4E3D7;
-            border: 1px solid #5A3D2B;
+            background-color: #D8B77D; /* Golden brown background for the tab */
+            border: 1px solid #3E2A47; /* Darker brown border */
             border-radius: 8px;
             padding: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -55,33 +72,37 @@
         }
         .floating-tab a {
             display: block;
-            color: #5A3D2B;
+            color: #3E2A47; /* Dark brown text color */
             margin: 10px 0;
             text-align: center;
             padding: 8px;
             border-radius: 5px;
-            background-color: #A67B5B;
+            background-color: #B68C4B; /* Golden brown background for links */
             color: #FFFFFF;
             text-decoration: none;
             transition: background-color 0.3s;
         }
         .floating-tab a:hover {
-            background-color: #8B5E40;
+            background-color: #9E7A4B; /* Darker golden brown on hover */
         }
         .close-btn {
             display: block;
             text-align: right;
             font-size: 14px;
             cursor: pointer;
-            color: #5A3D2B;
+            color: #3E2A47; /* Dark brown text color */
         }
     </style>
 </head>
 <body>
+    <!-- Header Section -->
+    <header>
+        <h1>Pro-Trial 1</h1>
+    </header>
+
+    <!-- Main Content Section -->
     <div class="container">
-        <h1>ProTrial1</h1>
-        <!-- Corrected the download button with a proper link inside the button -->
-        <button onclick="window.location.href='Prototype1.html'">Download File</button>
+        <button onclick=<a href="Prototype1.html" target="_blank">Genetics</a>>Download File</button>
         <button id="readNoteButton" onclick="openFloatingTab()">Read Note</button>
         
         <!-- Floating Tab -->
@@ -93,6 +114,11 @@
             <a href="microbiology-link" target="_blank">Microbiology</a>
         </div>
     </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 ProTrial1. All rights reserved.</p>
+    </footer>
 
     <script>
         function openFloatingTab() {
