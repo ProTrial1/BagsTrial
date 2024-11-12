@@ -390,6 +390,129 @@
         </div>
     </main>
 
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resizable YouTube Videos</title>
+    <style>
+        .video-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        iframe {
+            width: 300px;
+            height: 170px;
+            transition: width 0.3s, height 0.3s;
+        }
+        iframe.active {
+            width: 560px;
+            height: 315px;
+            z-index: 10;
+            position: relative;
+        }
+        iframe.disabled {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        .video-title {
+            margin-top: 8px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 10px;
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Watch These YouTube Videos</h1>
+    <div class="video-container">
+        <div>
+            <iframe src="https://www.youtube.com/embed/bKIpDtJdK8Q?enablejsapi=1&start=77" title="APT" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <div class="video-title">Transcription and Translation</div>
+        </div>
+        <div>
+            <iframe src="https://www.youtube.com/embed/Qqe4thU-os8?start=11" title="Example Video 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<div class="video-title">Replication</div>
+        </div>
+        <div>
+           <iframe src="https://www.youtube.com/embed/8wAwLwJAGHs" title="Example Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<div class="video-title">Transaltion</div>
+        </div>
+    </div>
+
+    <script>
+        const iframes = document.querySelectorAll('iframe');
+        let activePlayer = null;
+
+        function pauseAllVideos() {
+            iframes.forEach(iframe => {
+                iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+            });
+        }
+
+        function disableOtherFrames(currentIframe) {
+            iframes.forEach(iframe => {
+                if (iframe !== currentIframe) {
+                    iframe.classList.add('disabled');
+                }
+            });
+        }
+
+        function enableAllFrames() {
+            iframes.forEach(iframe => {
+                iframe.classList.remove('disabled');
+            });
+        }
+
+        iframes.forEach(iframe => {
+            // Enlarge the video when hovered, if not disabled
+            iframe.addEventListener('mouseover', () => {
+                if (!iframe.classList.contains('disabled')) {
+                    iframe.classList.add('active');
+                }
+            });
+            iframe.addEventListener('mouseleave', () => {
+                if (!iframe.classList.contains('playing')) {
+                    iframe.classList.remove('active');
+                }
+            });
+
+            // Play/pause logic when clicked
+            iframe.addEventListener('click', () => {
+                if (activePlayer && activePlayer !== iframe) {
+                    pauseAllVideos();
+                    enableAllFrames();
+                }
+                activePlayer = iframe;
+                disableOtherFrames(iframe);
+                iframe.classList.add('playing');
+            });
+
+            // Reset behavior when video stops playing or iframe loses focus
+            iframe.addEventListener('blur', () => {
+                iframe.classList.remove('playing');
+                enableAllFrames();
+            });
+        });
+
+        // Add event listener to pause video when iframe loses focus
+        window.addEventListener('blur', () => {
+            if (activePlayer) {
+                pauseAllVideos();
+                activePlayer = null;
+                enableAllFrames();
+            }
+        });
+    </script>
+</body>
+</html>
     <!-- Footer -->
     <footer style="
         background-color: #a37c50;
