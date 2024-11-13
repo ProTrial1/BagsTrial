@@ -108,43 +108,24 @@
             color: #3E2A47;
             margin: 20px 0;
         }
+        #login-form {
+            text-align: center;
+            padding: 20px;
+        }
     </style>
-</head>
-<body>
-    <!-- Header Section -->
-    <header>
-        <h1>Pro-Trial 1</h1>
-    </header>
-
-    <!-- Main Content Section -->
-    <div class="container">
-        <button onclick="window.location.href='Prototype1.html'">Download File</button>
-        <button id="readNoteButton" onclick="openFloatingTab()">Read Note</button>
-        
-        <!-- Floating Tab -->
-        <div id="floatingTab" class="floating-tab">
-            <span class="close-btn" onclick="closeFloatingTab()">✖ Close</span>
-            <a href="WikiWeb.html" target="_blank">Genetics</a>
-            <a href="#" target="_blank">Ferns, Mosses, and Epiphytes</a> <!-- Placeholder URL -->
-            <a href="#" target="_blank">Cell and Molecular Biology</a> <!-- Placeholder URL -->
-            <a href="#" target="_blank">Microbiology</a> <!-- Placeholder URL -->
-        </div>
-    </div>
-
-    <!-- Music Text and Spotify Embed -->
-    <div class="container">
-        <p class="music-text">Listen to music while studying</p>
-        <div class="iframe-container">
-            <iframe src="https://open.spotify.com/embed/playlist/35iVmNwAfWZrDBsmRkRMYW" allowtransparency="true" allow="encrypted-media"></iframe>
-        </div>
-    </div>
-
-    <!-- Footer Section -->
-    <footer>
-        <p>&copy; 2024 ProTrial1. All rights reserved.</p>
-    </footer>
-
     <script>
+        function checkPassword() {
+            const inputPassword = document.getElementById('password').value;
+            const correctPassword = 'mySecretPassword'; // Change this to your password
+
+            if (inputPassword === correctPassword) {
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            } else {
+                alert('Incorrect password. Please try again.');
+            }
+        }
+
         function openFloatingTab() {
             const button = document.getElementById('readNoteButton');
             const floatingTab = document.getElementById('floatingTab');
@@ -161,5 +142,50 @@
             document.getElementById('floatingTab').style.display = 'none';
         }
     </script>
+</head>
+<body>
+    <!-- Login Form for Password Protection -->
+    <div id="login-form">
+        <h1>Welcome to Pro-Trial 1</h1>
+        <p>Please enter the password to access the content:</p>
+        <input type="password" id="password" placeholder="Enter password">
+        <button onclick="checkPassword()">Submit</button>
+    </div>
+
+    <!-- Main Content Section (Initially Hidden) -->
+    <div id="main-content" style="display:none;">
+        <!-- Header Section -->
+        <header>
+            <h1>Pro-Trial 1</h1>
+        </header>
+
+        <!-- Main Content Section -->
+        <div class="container">
+            <button onclick="window.location.href='Prototype1.html'">Download File</button>
+            <button id="readNoteButton" onclick="openFloatingTab()">Read Note</button>
+
+            <!-- Floating Tab -->
+            <div id="floatingTab" class="floating-tab">
+                <span class="close-btn" onclick="closeFloatingTab()">✖ Close</span>
+                <a href="WikiWeb.html" target="_blank">Genetics</a>
+                <a href="#" target="_blank">Ferns, Mosses, and Epiphytes</a> <!-- Placeholder URL -->
+                <a href="#" target="_blank">Cell and Molecular Biology</a> <!-- Placeholder URL -->
+                <a href="#" target="_blank">Microbiology</a> <!-- Placeholder URL -->
+            </div>
+        </div>
+
+        <!-- Music Text and Spotify Embed -->
+        <div class="container">
+            <p class="music-text">Listen to music while studying</p>
+            <div class="iframe-container">
+                <iframe src="https://open.spotify.com/embed/playlist/35iVmNwAfWZrDBsmRkRMYW?utm_source=generator&theme=0"></iframe>
+            </div>
+        </div>
+
+        <!-- Footer Section -->
+        <footer>
+            <p>&copy; 2024 ProTrial1. All rights reserved.</p>
+        </footer>
+    </div>
 </body>
 </html>
