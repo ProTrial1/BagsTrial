@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mitochondria Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #9EABA2, #BDD1C5, #EECC8C, #E8B299, #D3A29D, #A36381);
+        }
+        .header, .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+        }
+        .header {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        .footer {
+            font-size: 0.9em;
+        }
+        .quiz-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 40px auto;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .question {
+            margin: 20px 0;
+        }
+        .answers {
+            margin-left: 20px;
+        }
+        .answers label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        .submit-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background: #0056b3;
+        }
+        .result {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background: #e7f3e7;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+            border-radius: 5px;
+            display: none;
+        }
+        .action-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .action-buttons button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .retake-btn {
+            background: #28a745;
+            color: white;
+        }
+        .retake-btn:hover {
+            background: #218838;
+        }
+        .quit-btn {
+            background: #dc3545;
+            color: white;
+        }
+        .quit-btn:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">Take a quiz</div>
+
+    <div class="quiz-container">
+        <h1>Mitochondria Quiz</h1>
+        <div id="quiz-section">
+            <div id="question-container" class="question"></div>
+            <div id="answers-container" class="answers"></div>
+            <button type="button" class="submit-btn" id="submit-btn">Submit</button>
+        </div>
+        <div id="result" class="result"></div>
+        <div id="action-buttons" class="action-buttons" style="display: none;">
+            <button class="retake-btn" id="retake-btn">Retake Quiz</button>
+            <button class="quit-btn" id="quit-btn">Quit</button>
+        </div>
+    </div>
+
+    <div class="footer">&copy; 2024 Protrial-1. All rights reserved.</div>
+
+    <script>
+    const questions = [
+    {
+        "question": "Which of the following is NOT a function of connective tissue?",
+        "options": {
+            "a": "Mechanical support",
+            "b": "Nutrient transport",
+            "c": "Energy storage",
+            "d": "Hormone production"
+        },
+        "answer": "d"
+    },
+    {
+        "question": "Collagen fibers are primarily responsible for:",
+        "options": {
+            "a": "Flexibility of tissues",
+            "b": "Stretch and recoil",
+            "c": "Filtration of microbes",
+            "d": "Thermal insulation"
+        },
+        "answer": "a"
+    },
+    {
+        "question": "Reticular fibers are most commonly found in:",
+        "options": {
+            "a": "Arteries and veins",
+            "b": "Spleen and lymph nodes",
+            "c": "Subcutaneous fat",
+            "d": "Cartilage"
+        },
+        "answer": "b"
+    },
+    {
+        "question": "Adipose tissue provides all of the following EXCEPT:",
+        "options": {
+            "a": "Heat insulation",
+            "b": "Energy storage",
+            "c": "Filtration of microbes",
+            "d": "Protection of organs"
+        },
+        "answer": "c"
+    },
+    {
+        "question": "Dense regular connective tissue is best suited for:",
+        "options": {
+            "a": "Stretch and recoil",
+            "b": "Supporting the liver and spleen",
+            "c": "Providing strong attachments like tendons and ligaments",
+            "d": "Encapsulating organs"
+        },
+        "answer": "c"
+    }
+];
+
+
+    function addQuestion(question, options, answer) {
+        questions.push({ question, options, answer });
+    }
+
+    // Example: Add a new question dynamically
+   Here is the reformatted version of questions 6–10 in the requested format:  
+addQuestion(
+    "Which connective tissue contains freely branching elastic fibers?",
+    {
+        a: "Dense irregular connective tissue",
+        b: "Elastic connective tissue",
+        c: "Hyaline cartilage",
+        d: "Reticular connective tissue"
+    },
+    "b"
+);
+
+addQuestion(
+    "Which type of cartilage provides shock absorption?",
+    {
+        a: "Hyaline cartilage",
+        b: "Elastic cartilage",
+        c: "Fibrocartilage",
+        d: "Dense regular connective tissue"
+    },
+    "c"
+);
+
+addQuestion(
+    "Which of the following is classified as a liquid connective tissue?",
+    {
+        a: "Cartilage",
+        b: "Blood",
+        c: "Dense irregular tissue",
+        d: "Adipose tissue"
+    },
+    "b"
+);
+
+addQuestion(
+    "The primary characteristic of embryonic stem cells is:",
+    {
+        a: "Limited differentiation capacity",
+        b: "High self-renewal capacity and pluripotency",
+        c: "Reprogrammed adult origin",
+        d: "Exclusively found in adults"
+    },
+    "b"
+);
+
+addQuestion(
+    "What is the role of induced pluripotent stem cells (iPSCs)?",
+    {
+        a: "Transporting oxygen in blood",
+        b: "Offering ethical solutions for stem cell research",
+        c: "Filtration in lymph nodes",
+        d: "Providing strength to tendons"
+    },
+    "b"
+);
+
+addQuestion(
+    "Fibroblasts are the main producers of fibers in connective tissue.",
+    {
+        a: "True",
+        b: "False"
+    },
+    "a"
+);
+
+addQuestion(
+    "Areolar tissue is a type of dense connective tissue.",
+    {
+        a: "True",
+        b: "False"
+    },
+    "b"
+);
+
+addQuestion(
+    "Reticular connective tissue forms the supportive framework for the liver.",
+    {
+        a: "True",
+        b: "False"
+    },
+    "a"
+);
+
+addQuestion(
+    "Elastic fibers allow tissues to stretch and recoil.",
+    {
+        a: "True",
+        b: "False"
+    },
+    "a"
+);
+
+addQuestion(
+    "Dense irregular connective tissue is found in tendons.",
+    {
+        a: "True",
+        b: "False"
+    },
+    "b"
+);
+
+addQuestion(
+    "Hyaline cartilage provides smooth surfaces for joint movements.",
+    {
+        a: "True",
+        b: "False"
+    },
+    "a"
+);
+
+addQuestion(
+    "Fibrocartilage contains elastin for flexibility.",
+    {
+        a: "True",
+        b: "False"
+    },
+    "b"
+);
+
+addQuestion(
+    "Mast cells are involved in the defensive functions of connective tissue.",
+    {
+        a: "True",
+        b: "False"
+    },
+    "a"
+);
+
+addQuestion(
+    "Bone tissue is considered a type of connective tissue.",
+    {
+        a: "True",
+        b: "False"
+    },
+    "a"
+);
+
+addQuestion(
+    "Blood only transports oxygen and does not carry nutrients.",
+    {
+        a: "True",
+        b: "False"
+    },
+    "b"
+);
+addQuestion(
+    "Which cell type is involved in engulfing bacteria in connective tissue?",
+    {
+        a: "Fibrocytes",
+        b: "Macrophages",
+        c: "Plasma cells",
+        d: "Mast cells"
+    },
+    "b"
+);
+
+addQuestion(
+    "Elastic cartilage can be found in:",
+    {
+        a: "Intervertebral discs",
+        b: "The ear",
+        c: "The spleen",
+        d: "Tendons"
+    },
+    "b"
+);
+
+addQuestion(
+    "Which connective tissue is known for filtering microbes?",
+    {
+        a: "Adipose tissue",
+        b: "Dense irregular tissue",
+        c: "Reticular connective tissue",
+        d: "Hyaline cartilage"
+    },
+    "c"
+);
+
+addQuestion(
+    "Loose connective tissue includes:",
+    {
+        a: "Areolar, reticular, and elastic tissues",
+        b: "Areolar, adipose, and reticular tissues",
+        c: "Dense regular and dense irregular tissues",
+        d: "Cartilage and bone"
+    },
+    "b"
+);
+
+addQuestion(
+    "The strongest type of cartilage is:",
+    {
+        a: "Elastic cartilage",
+        b: "Hyaline cartilage",
+        c: "Fibrocartilage",
+        d: "Reticular cartilage"
+    },
+    "c"
+);
+
+addQuestion(
+    "Stem cells used in tissue engineering are capable of:",
+    {
+        a: "Limited division",
+        b: "Self-renewal and differentiation",
+        c: "Producing collagen fibers",
+        d: "Generating antibodies"
+    },
+    "b"
+);
+
+addQuestion(
+    "Which tissue forms a loose network beneath the skin?",
+    {
+        a: "Dense connective tissue",
+        b: "Areolar connective tissue",
+        c: "Reticular connective tissue",
+        d: "Elastic connective tissue"
+    },
+    "b"
+);
+
+addQuestion(
+    "A scaffold in tissue engineering is used to:",
+    {
+        a: "Store fat",
+        b: "Transport nutrients",
+        c: "Create custom tissue constructs",
+        d: "Provide stretch and flexibility"
+    },
+    "c"
+);
+
+addQuestion(
+    "What is the role of adipose cells in connective tissue?",
+    {
+        a: "Filtration of microbes",
+        b: "Energy storage and insulation",
+        c: "Producing antibodies",
+        d: "Providing flexibility"
+    },
+    "b"
+);
+
+addQuestion(
+    "Which type of fiber is small, delicate, and branched?",
+    {
+        a: "Collagen fibers",
+        b: "Elastic fibers",
+        c: "Reticular fibers",
+        d: "Dense fibers"
+    },
+    "c"
+);
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    function loadQuestion() {
+        const questionContainer = document.getElementById('question-container');
+        const answersContainer = document.getElementById('answers-container');
+        const submitButton = document.getElementById('submit-btn');
+
+        // Clear previous content
+        questionContainer.innerHTML = '';
+        answersContainer.innerHTML = '';
+
+        // Load current question
+        const currentQuestion = questions[currentQuestionIndex];
+        questionContainer.innerText = currentQuestion.question;
+
+        // Generate answers dynamically
+        Object.entries(currentQuestion.options).forEach(([key, value]) => {
+            const label = document.createElement('label');
+            label.innerHTML = `
+                <input type="radio" name="answer" value="${key}"> ${key}) ${value}
+            `;
+            answersContainer.appendChild(label);
+        });
+
+        submitButton.onclick = checkAnswer;
+    }
+
+    function checkAnswer() {
+        const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+        const resultContainer = document.getElementById('result');
+
+        if (!selectedAnswer) {
+            alert('Please select an answer!');
+            return;
+        }
+
+        const correctAnswer = questions[currentQuestionIndex].answer;
+        if (selectedAnswer.value === correctAnswer) {
+            score++;
+            resultContainer.innerText = 'Correct!';
+            resultContainer.style.backgroundColor = '#e7f3e7';
+            resultContainer.style.color = '#2e7d32';
+        } else {
+            resultContainer.innerText = `Wrong! The correct answer was ${correctAnswer.toUpperCase()}.`;
+            resultContainer.style.backgroundColor = '#f8d7da';
+            resultContainer.style.color = '#721c24';
+        }
+
+        resultContainer.style.display = 'block';
+
+        currentQuestionIndex++;
+
+        if (currentQuestionIndex < questions.length) {
+            setTimeout(() => {
+                resultContainer.style.display = 'none';
+                loadQuestion();
+            }, 2000);
+        } else {
+            setTimeout(() => {
+                displayFinalScore();
+            }, 2000);
+        }
+    }
+
+    function displayFinalScore() {
+        const quizSection = document.getElementById('quiz-section');
+        const resultContainer = document.getElementById('result');
+        const actionButtons = document.getElementById('action-buttons');
+
+        quizSection.innerHTML = `<h2>Your final score is ${score} out of ${questions.length}!</h2>`;
+        resultContainer.style.display = 'none';
+        actionButtons.style.display = 'block';
+
+        document.getElementById('retake-btn').onclick = retakeQuiz;
+        document.getElementById('quit-btn').onclick = quitQuiz;
+    }
+
+    function retakeQuiz() {
+        currentQuestionIndex = 0;
+        score = 0;
+        document.getElementById('action-buttons').style.display = 'none';
+
+        const quizSection = document.get
+ElementById('quiz-section');
+        quizSection.innerHTML = `
+            <div id="question-container" class="question"></div>
+            <div id="answers-container" class="answers"></div>
+            <button type="button" class="submit-btn" id="submit-btn">Submit</button>
+        `;
+
+        loadQuestion();
+    }
+
+    function quitQuiz() {
+        const quizSection = document.getElementById('quiz-section');
+        quizSection.innerHTML = '<h2>Thank you for playing! Goodbye!</h2>';
+        document.getElementById('action-buttons').style.display = 'none';
+    }
+
+    // Load the first question
+    loadQuestion();
+</script>
+
+</html>
