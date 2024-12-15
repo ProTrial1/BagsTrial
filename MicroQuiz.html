@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mitochondria Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #9EABA2, #BDD1C5, #EECC8C, #E8B299, #D3A29D, #A36381);
+        }
+        .header, .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+        }
+        .header {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        .footer {
+            font-size: 0.9em;
+        }
+        .quiz-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 40px auto;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .question {
+            margin: 20px 0;
+        }
+        .answers {
+            margin-left: 20px;
+        }
+        .answers label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        .submit-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background: #0056b3;
+        }
+        .result {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background: #e7f3e7;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+            border-radius: 5px;
+            display: none;
+        }
+        .action-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .action-buttons button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .retake-btn {
+            background: #28a745;
+            color: white;
+        }
+        .retake-btn:hover {
+            background: #218838;
+        }
+        .quit-btn {
+            background: #dc3545;
+            color: white;
+        }
+        .quit-btn:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">Take a quiz</div>
+
+    <div class="quiz-container">
+        <h1>Mitochondria Quiz</h1>
+        <div id="quiz-section">
+            <div id="question-container" class="question"></div>
+            <div id="answers-container" class="answers"></div>
+            <button type="button" class="submit-btn" id="submit-btn">Submit</button>
+        </div>
+        <div id="result" class="result"></div>
+        <div id="action-buttons" class="action-buttons" style="display: none;">
+            <button class="retake-btn" id="retake-btn">Retake Quiz</button>
+            <button class="quit-btn" id="quit-btn">Quit</button>
+        </div>
+    </div>
+
+    <div class="footer">&copy; 2024 Protrial-1. All rights reserved.</div>
+
+    <script>
+    const questions =[
+    {
+        "question": "What type of bacteria are Alphaproteobacteria?",
+        "options": {
+            "a": "Gram-positive",
+            "b": "Gram-negative",
+            "c": "Spore-forming",
+            "d": "Acid-fast"
+        },
+        "answer": "b"
+    },
+    {
+        "question": "Which order of Alphaproteobacteria is involved in nitrogen fixation?",
+        "options": {
+            "a": "Rickettsiales",
+            "b": "Rhizobiales",
+            "c": "Caulobacterales",
+            "d": "Brucellales"
+        },
+        "answer": "b"
+    },
+    {
+        "question": "What diseases are associated with the Rickettsiales order?",
+        "options": {
+            "a": "Gonorrhea and meningitis",
+            "b": "Typhus and Rocky Mountain spotted fever",
+            "c": "Brucellosis",
+            "d": "None of the above"
+        },
+        "answer": "b"
+    },
+    {
+        "question": "What is bioremediation?",
+        "options": {
+            "a": "Cleaning up pollutants using chemicals",
+            "b": "Using microorganisms to clean up contaminants",
+            "c": "Removing plants from contaminated areas",
+            "d": "A method to reduce radioactive waste"
+        },
+        "answer": "b"
+    },
+    {
+        "question": "What is the primary function of Rhizobiales in plants?",
+        "options": {
+            "a": "Degrading pollutants",
+            "b": "Fixing nitrogen",
+            "c": "Causing infections",
+            "d": "Preventing soil erosion"
+        },
+        "answer": "b"
+    }
+];
+
+    function addQuestion(question, options, answer) {
+        questions.push({ question, options, answer });
+    }
+
+    // Example: Add a new question dynamically
+    addQuestion(
+    "What is a characteristic of Betaproteobacteria?",
+    {
+        a: "All are anaerobic",
+        b: "All are aerobic",
+        c: "All are Gram-negative",
+        d: "All are spore-forming"
+    },
+    "c"
+);
+
+addQuestion(
+    "What genus in the order Neisseriales causes meningitis?",
+    {
+        a: "Nitrosomonas",
+        b: "Neisseria",
+        c: "Bordetella",
+        d: "Rickettsia"
+    },
+    "b"
+);
+
+addQuestion(
+    "Which stage of Pertussis is characterized by uncontrollable coughing?",
+    {
+        a: "Incubation",
+        b: "Catarrhal",
+        c: "Paroxysmal",
+        d: "Convalescent"
+    },
+    "c"
+);
+
+addQuestion(
+    "The primary transmission method of Pertussis is:",
+    {
+        a: "Waterborne droplets",
+        b: "Food contamination",
+        c: "Airborne droplets",
+        d: "Soil contact"
+    },
+    "c"
+);
+
+addQuestion(
+    "Which order of Betaproteobacteria contains nitrifying bacteria?",
+    {
+        a: "Burkholderiales",
+        b: "Neisseriales",
+        c: "Nitrosomonadales",
+        d: "Hydrogenophilales"
+    },
+    "c"
+);
+
+addQuestion(
+    "How do Planctomycetes primarily reproduce?",
+    {
+        a: "Binary fission",
+        b: "Polar budding",
+        c: "Spore formation",
+        d: "Sexual reproduction"
+    },
+    "b"
+);
+
+addQuestion(
+    "What unique cellular structure do Planctomycetes possess?",
+    {
+        a: "Endospores",
+        b: "Holdfasts/stalks",
+        c: "Flagella",
+        d: "Pili"
+    },
+    "b"
+);
+
+addQuestion(
+    "Planctomycetes are primarily found in:",
+    {
+        a: "Marine environments only",
+        b: "Extreme environments only",
+        c: "Freshwater, seawater, and terrestrial environments",
+        d: "Human hosts"
+    },
+    "c"
+);
+
+addQuestion(
+    "What is the reproductive protein lacking in Planctomycetes?",
+    {
+        a: "Tubulin",
+        b: "FtsZ",
+        c: "Actin",
+        d: "Dynein"
+    },
+    "b"
+);
+
+addQuestion(
+    "Which structure helps Planctomycetes adhere to surfaces?",
+    {
+        a: "Crateriform structures",
+        b: "Flagella",
+        c: "Pili",
+        d: "Sheaths"
+    },
+    "a"
+);
+
+addQuestion(
+    "What is the smallest valid class of Proteobacteria?",
+    {
+        a: "Alphaproteobacteria",
+        b: "Betaproteobacteria",
+        c: "Epsilonproteobacteria",
+        d: "Gammaproteobacteria"
+    },
+    "c"
+);
+
+addQuestion(
+    "Which genus in Epsilonproteobacteria is a Class I carcinogen?",
+    {
+        a: "Campylobacter",
+        b: "Helicobacter",
+        c: "Wolinella",
+        d: "Sulfurospirillum"
+    },
+    "b"
+);
+
+addQuestion(
+    "What environment is common for Epsilonproteobacteria?",
+    {
+        a: "Forest soil",
+        b: "Hydrothermal vents",
+        c: "Urban areas",
+        d: "Ice caps"
+    },
+    "b"
+);
+
+addQuestion(
+    "What is a common symptom of Campylobacter infection?",
+    {
+        a: "Rash",
+        b: "Diarrhea",
+        c: "Cough",
+        d: "Headache"
+    },
+    "b"
+);
+
+addQuestion(
+    "Which metabolic strategy is common in Epsilonproteobacteria?",
+    {
+        a: "Nitrogen fixation",
+        b: "Chemolithotrophy",
+        c: "Photosynthesis",
+        d: "Fermentation"
+    },
+    "b"
+);
+
+addQuestion(
+    "What is the main cause of gonorrhea?",
+    {
+        a: "Campylobacter jejuni",
+        b: "Helicobacter pylori",
+        c: "Neisseria gonorrhoeae",
+        d: "Brucella spp."
+    },
+    "c"
+);
+
+addQuestion(
+    "Which disease is caused by Brucella species?",
+    {
+        a: "Gonorrhea",
+        b: "Typhus",
+        c: "Brucellosis",
+        d: "Rocky Mountain spotted fever"
+    },
+    "c"
+);
+
+addQuestion(
+    "How is H. pylori transmitted?",
+    {
+        a: "Through soil",
+        b: "Contaminated food, water, or person-to-person contact",
+        c: "Airborne droplets",
+        d: "Insect bites"
+    },
+    "b"
+);
+
+addQuestion(
+    "What is a primary feature of meningococcal meningitis?",
+    {
+        a: "Rash starting on wrists",
+        b: "Inflammation of the meninges",
+        c: "Severe coughing",
+        d: "Vaginal discharge"
+    },
+    "b"
+);
+
+addQuestion(
+    "What treatment is used for severe Campylobacter infections?",
+    {
+        a: "Antibiotics like erythromycin",
+        b: "Vaccination",
+        c: "Surgery",
+        d: "Blood transfusions"
+    },
+    "a"
+);
+
+addQuestion(
+    "What shape is common in Neisseria bacteria?",
+    {
+        a: "Rod-shaped",
+        b: "Coccus-shaped in pairs",
+        c: "Spiral",
+        d: "Irregular"
+    },
+    "b"
+);
+
+addQuestion(
+    "What helps Bordetella attach to respiratory epithelial cells?",
+    {
+        a: "Flagella",
+        b: "Fimbriae",
+        c: "Capsules",
+        d: "Biofilms"
+    },
+    "b"
+);
+
+addQuestion(
+    "What chemical does Thiobacillus oxidize?",
+    {
+        a: "Nitrogen compounds",
+        b: "Sulfur compounds",
+        c: "Organic matter",
+        d: "Water"
+    },
+    "b"
+);
+
+addQuestion(
+    "What pathogen can be used as a bioterrorism agent?",
+    {
+        a: "Bordetella pertussis",
+        b: "Burkholderia pseudomallei",
+        c: "Neisseria meningitidis",
+        d: "Campylobacter jejuni"
+    },
+    "b"
+);
+
+addQuestion(
+    "Which bacterial genus metabolizes methanol?",
+    {
+        a: "Rickettsia",
+        b: "Caulobacter",
+        c: "Methylobacterium",
+        d: "Helicobacter"
+    },
+    "c"
+);
+
+addQuestion(
+    "How does Agrobacterium benefit genetic engineering?",
+    {
+        a: "Causes nitrogen fixation",
+        b: "Transfers genetic material into plants",
+        c: "Degrades pollutants",
+        d: "Produces antibiotics"
+    },
+    "b"
+);
+
+addQuestion(
+    "Which Planctomycetes species aligns with solar radiation?",
+    {
+        a: "Blastocaulis sphaerica",
+        b: "Isophaera pallida",
+        c: "Gallionella",
+        d: "Thiobacillus"
+    },
+    "b"
+);
+
+addQuestion(
+    "What genus helps in bioremediation?",
+    {
+        a: "Rhizobium",
+        b: "Spirillum",
+        c: "Methylobacterium",
+        d: "Thiobacillus"
+    },
+    "a"
+);
+
+addQuestion(
+    "What bacteria are chemoorganotrophic?",
+    {
+        a: "Neisseria spp.",
+        b: "Campylobacter spp.",
+        c: "Planctomycetes",
+        d: "Spirillum"
+    },
+    "a"
+);
+
+addQuestion(
+    "What structure protects Burkholderiales against predators?",
+    {
+        a: "Holdfasts",
+        b: "Sheaths",
+        c: "Crateriform structures",
+        d: "Flagella"
+    },
+    "b"
+);
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    function loadQuestion() {
+        const questionContainer = document.getElementById('question-container');
+        const answersContainer = document.getElementById('answers-container');
+        const submitButton = document.getElementById('submit-btn');
+
+        // Clear previous content
+        questionContainer.innerHTML = '';
+        answersContainer.innerHTML = '';
+
+        // Load current question
+        const currentQuestion = questions[currentQuestionIndex];
+        questionContainer.innerText = currentQuestion.question;
+
+        // Generate answers dynamically
+        Object.entries(currentQuestion.options).forEach(([key, value]) => {
+            const label = document.createElement('label');
+            label.innerHTML = `
+                <input type="radio" name="answer" value="${key}"> ${key}) ${value}
+            `;
+            answersContainer.appendChild(label);
+        });
+
+        submitButton.onclick = checkAnswer;
+    }
+
+    function checkAnswer() {
+        const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+        const resultContainer = document.getElementById('result');
+
+        if (!selectedAnswer) {
+            alert('Please select an answer!');
+            return;
+        }
+
+        const correctAnswer = questions[currentQuestionIndex].answer;
+        if (selectedAnswer.value === correctAnswer) {
+            score++;
+            resultContainer.innerText = 'Correct!';
+            resultContainer.style.backgroundColor = '#e7f3e7';
+            resultContainer.style.color = '#2e7d32';
+        } else {
+            resultContainer.innerText = `Wrong! The correct answer was ${correctAnswer.toUpperCase()}.`;
+            resultContainer.style.backgroundColor = '#f8d7da';
+            resultContainer.style.color = '#721c24';
+        }
+
+        resultContainer.style.display = 'block';
+
+        currentQuestionIndex++;
+
+        if (currentQuestionIndex < questions.length) {
+            setTimeout(() => {
+                resultContainer.style.display = 'none';
+                loadQuestion();
+            }, 2000);
+        } else {
+            setTimeout(() => {
+                displayFinalScore();
+            }, 2000);
+        }
+    }
+
+    function displayFinalScore() {
+        const quizSection = document.getElementById('quiz-section');
+        const resultContainer = document.getElementById('result');
+        const actionButtons = document.getElementById('action-buttons');
+
+        quizSection.innerHTML = `<h2>Your final score is ${score} out of ${questions.length}!</h2>`;
+        resultContainer.style.display = 'none';
+        actionButtons.style.display = 'block';
+
+        document.getElementById('retake-btn').onclick = retakeQuiz;
+        document.getElementById('quit-btn').onclick = quitQuiz;
+    }
+
+    function retakeQuiz() {
+        currentQuestionIndex = 0;
+        score = 0;
+        document.getElementById('action-buttons').style.display = 'none';
+
+        const quizSection = document.get
+ElementById('quiz-section');
+        quizSection.innerHTML = `
+            <div id="question-container" class="question"></div>
+            <div id="answers-container" class="answers"></div>
+            <button type="button" class="submit-btn" id="submit-btn">Submit</button>
+        `;
+
+        loadQuestion();
+    }
+
+    function quitQuiz() {
+        const quizSection = document.getElementById('quiz-section');
+        quizSection.innerHTML = '<h2>Thank you for playing! Goodbye!</h2>';
+        document.getElementById('action-buttons').style.display = 'none';
+    }
+
+    // Load the first question
+    loadQuestion();
+</script>
+
+</html>
