@@ -907,7 +907,7 @@
 </html>
             </div>
         </div>
-        <div style="margin-bottom: 20px;">
+       <div style="margin-bottom: 20px;">
     <button onclick="toggleContent('content7')" style="
         background: linear-gradient(to right, #EECC8C, #E8B299, #D3A29D);
         color: #4b3d33;
@@ -932,14 +932,15 @@
         border: 1px solid #a37c50;
         margin-top: 10px;
         width: 100%;
+        box-sizing: border-box;
     ">
         <h1>Review Material</h1>
-         <h3>Mitochondria</h3>
-            <ul>
+        <h3>Mitochondria</h3>
+        <ul>
             <li><a href="MicroQuiz.html">Final Quiz</a></li>
-            </ul>
+        </ul>
         <!-- Responsive Iframe Wrapper -->
-        <div style="position: relative; padding-bottom: 75%; height: 0; overflow: hidden;">
+        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border: 1px solid #ccc;">
             <iframe 
                 src="micro finals.pdf" 
                 style="
@@ -952,6 +953,20 @@
                 " 
                 frameborder="0">
             </iframe>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleContent(id) {
+        const element = document.getElementById(id);
+        if (element.style.display === "none" || element.style.display === "") {
+            element.style.display = "block";
+        } else {
+            element.style.display = "none";
+        }
+    }
+</script>
         </div>
     </div>
 </div>
