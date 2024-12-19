@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Flashcards</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+        .flashcard {
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        .flashcard:hover {
+            transform: scale(1.05);
+        }
+        .term {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .definition {
+            display: none;
+            font-size: 16px;
+            color: #333;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            width: 300px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <!-- Flashcard Container -->
+    <div class="flashcard" onclick="toggleDefinition()">
+        <div class="term" id="term"></div>
+        <div class="definition" id="definition"></div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="buttons">
+        <button onclick="prevCard()" id="prevBtn">Previous</button>
+        <button onclick="nextCard()" id="nextBtn">Next</button>
+    </div>
+
+    <script>
+        // Array of flashcards: Add terms and definitions here
+        const flashcards = [
+{
+        "term": "Histology",
+        "definition": "The branch of anatomy that studies tissues in animals and plants, focusing on their structure and function. It intersects with cell biology, biochemistry, physiology, and pathology."
+    },
+    {
+        "term": "Microscopy",
+        "definition": "The method of studying cells and structures using a microscope."
+    },
+    {
+        "term": "Light Microscope",
+        "definition": "Utilizes light for illumination to observe specimens."
+    },
+    {
+        "term": "Electron Microscope",
+        "definition": "Employs an electron beam for high-resolution imaging."
+    },
+    {
+        "term": "Transmission Electron Microscope (TEM)",
+        "definition": "A type of electron microscope used for detailed internal structure visualization."
+    },
+    {
+        "term": "Scanning Electron Microscope (SEM)",
+        "definition": "A type of electron microscope used for surface structure imaging."
+    },
+    {
+        "term": "Magnification",
+        "definition": "The ratio between the size of the microscope image and its actual size."
+    },
+    {
+        "term": "Resolution",
+        "definition": "A measure of the clarity of an image."
+    },
+    {
+        "term": "Contrast",
+        "definition": "The ability to distinguish a structure based on its difference from adjacent structures."
+    },
+    {
+        "term": "Fixation",
+        "definition": "The treatment of tissue with chemical agents to preserve structure."
+    },
+    {
+        "term": "Dehydration and Clearing",
+        "definition": "The process of removing water from the tissue sample."
+    },
+    {
+        "term": "Embedding",
+        "definition": "The process of infiltrating the tissue with paraffin for support."
+    },
+    {
+        "term": "Sectioning",
+        "definition": "Cutting the tissue into thin, specific increments."
+    },
+    {
+        "term": "Mounting and Staining",
+        "definition": "Placing the tissue on adhesive slides and applying stains."
+    },
+    {
+        "term": "Hematoxylin",
+        "definition": "A stain that highlights basophilic (acidic) components of the cell."
+    },
+    {
+        "term": "Eosin",
+        "definition": "A stain that highlights acidophilic (basic) components of the cell."
+    },
+    {
+        "term": "Toluidine Blue",
+        "definition": "A stain that highlights metachromatic components of the cell."
+    },
+    {
+        "term": "Histochemistry",
+        "definition": "A staining method for identifying macromolecules in tissues."
+    },
+    {
+        "term": "Periodic Acid Schiff (PAS)",
+        "definition": "A staining method used to detect polysaccharides like glycogen and mucins in tissues."
+    },
+    {
+        "term": "Feulgen Reaction",
+        "definition": "A staining method used to identify DNA in cell specimens."
+    },
+    {
+        "term": "Gomori-Takamatsu",
+        "definition": "A method for localizing the alkaline phosphatase enzyme."
+    },
+    {
+        "term": "Mordant",
+        "definition": "A substance used to fix dyes on tissues by forming a complex with the dye."
+    },
+    {
+        "term": "Counterstain",
+        "definition": "A contrasting stain that highlights structures stained by the principal stain."
+    },
+    {
+        "term": "Immunocytochemistry",
+        "definition": "A technique that uses fluorescent antibodies to localize intracellular and extracellular macromolecules."
+    },
+    {
+        "term": "Autoradiography",
+        "definition": "A technique that incorporates radioactive isotopes into macromolecules, visualized via overlay film."
+    },
+    {
+        "term": "Cellular Communication",
+        "definition": "The process by which cells send, receive, and interpret signals to coordinate functions, maintain homeostasis, and respond to environmental changes."
+    },
+    {
+        "term": "Cell Signaling",
+        "definition": "A system of communication where a signal (ligand) produced by a sending cell is transmitted to a receiving cell, often triggering a chain of chemical reactions inside the receiving cell to elicit a specific response."
+    },
+    {
+        "term": "Autocrine Signaling",
+        "definition": "A signaling mechanism where a cell produces a signal to which it itself responds, enabling self-regulation. For example, immune cells producing growth factors to stimulate their own proliferation."
+    },
+    {
+        "term": "Paracrine Signaling",
+        "definition": "Communication where the signal released by one cell affects nearby cells. For instance, neurotransmitters crossing synapses between neurons."
+    },
+    {
+        "term": "Endocrine Signaling",
+        "definition": "A form of signaling where hormones are secreted into the bloodstream and transported to target cells located at a distance, such as insulin regulating glucose levels in cells."
+    },
+    {
+        "term": "Direct Signaling",
+        "definition": "Also known as juxtacrine signaling, it occurs when cells communicate through direct contact, such as via gap junctions or membrane-bound molecules interacting with each other."
+    },
+    {
+        "term": "Signal Production",
+        "definition": "The synthesis of signaling molecules (ligands) by a sending cell. These molecules can include proteins, peptides, or other chemicals."
+    },
+    {
+        "term": "Signal Release",
+        "definition": "The process by which signaling molecules are secreted from a sending cell into the extracellular environment."
+    },
+    {
+        "term": "Signal Transport",
+        "definition": "The movement of the signaling molecule through the extracellular space or circulatory system to reach the target cell."
+    },
+    {
+        "term": "Signal Reception",
+        "definition": "The binding of a signaling molecule to a receptor protein on the surface or inside the target cell, initiating the signaling process."
+    },
+    {
+        "term": "Signal Transduction",
+        "definition": "A sequence of molecular events triggered by the reception of a signal, converting it from an extracellular message to an intracellular response."
+    },
+    {
+        "term": "Cellular Response",
+        "definition": "The specific action taken by a cell in response to a signal, such as gene activation, protein production, or a change in cell behavior."
+    },
+    {
+        "term": "Signal Termination",
+        "definition": "The process by which signaling pathways are turned off, ensuring the response is regulated and does not persist unnecessarily."
+    },
+            {
+        "term": "Cytoskeleton",
+        "definition": "The cytoskeleton is a dynamic network of protein filaments that provides structural support, shape, and mechanical stability to cells, facilitating cell division, movement, and intracellular transport."
+    },
+    {
+        "term": "Structural Support",
+        "definition": "Maintains the cell's shape and provides mechanical support."
+    },
+    {
+        "term": "Cell Division",
+        "definition": "Plays a crucial role in mitosis and meiosis, particularly in the formation of the mitotic spindle."
+    },
+    {
+        "term": "Intracellular Transport",
+        "definition": "Facilitates the movement of organelles, vesicles, and other cargo within the cell."
+    },
+    {
+        "term": "Cell Movement",
+        "definition": "Involved in the movement of the cell itself, such as in amoeboid movement or during wound healing."
+    },
+    {
+        "term": "Cytokinesis",
+        "definition": "Helps in the final separation of daughter cells during cell division."
+    },
+    {
+        "term": "Signal Transduction",
+        "definition": "Participates in the transmission of chemical signals within the cell."
+    },
+    {
+        "term": "Microtubules",
+        "definition": "The thickest filaments involved in cell division, intracellular transport, and maintaining cell shape. Long hollow cylinders made of alpha and beta tubulin."
+    },
+    {
+        "term": "Intermediate Filaments",
+        "definition": "Filaments with great tensile strength involved in cell division and transport, composed of fibrous intermediate proteins."
+    },
+    {
+        "term": "Keratin",
+        "definition": "Class I and II intermediate filaments found in epithelial cells, providing mechanical support to tissues."
+    },
+    {
+        "term": "Vimentin",
+        "definition": "A Class III intermediate filament found in mesenchymal cells."
+    },
+    {
+        "term": "Desmin",
+        "definition": "A Class III intermediate filament found in muscle cells."
+    },
+    {
+        "term": "Neurofilament",
+        "definition": "A Class IV intermediate filament found in nerve cells."
+    },
+    {
+        "term": "Lamin",
+        "definition": "A Class V intermediate filament that supports the nuclear envelope."
+    },
+    {
+        "term": "Microfilaments",
+        "definition": "Also known as actin filaments, they are the thinnest cytoskeletal filaments responsible for movement and support."
+    },
+    {
+        "term": "G-actin",
+        "definition": "The monomeric form of actin that binds ATP in its globular form."
+    },
+    {
+        "term": "F-actin",
+        "definition": "The filamentous form of actin, which becomes ADP-bound after polymerization."
+    },
+    {
+        "term": "Muscular Dystrophy",
+        "definition": "A group of genetic disorders affecting muscle function and structure, causing progressive weakness and degradation of skeletal muscles."
+    },
+    {
+        "term": "Progeria",
+        "definition": "A rare genetic disorder causing premature aging due to abnormalities in the nuclear lamin, a type of intermediate filament."
+    },
+    {
+        "term": "Alzheimer's and Parkinson's Disease",
+        "definition": "Diseases characterized by the accumulation of abnormal proteins in the brain, disrupting the cytoskeleton and impairing its function."
+    },
+    {
+        "term": "Extracellular Matrix",
+        "definition": "A large network of proteins and other molecules that surround, support, and give structure to the cells and tissues in the body."
+    },
+    {
+        "term": "Tissue",
+        "definition": "A group of cells that have a similar structure and function together as a unit."
+    },
+    {
+        "term": "Proteoglycan Network",
+        "definition": "Comprises sugars called glycosaminoglycans, acting as compressive filler substances to protect cells and store many cellular growth and immune-activating factors."
+    },
+    {
+        "term": "Fibrous Protein",
+        "definition": "Proteins embedded within the proteoglycan network that form the structural scaffold of the ECM and attach it to nearby cells."
+    },
+    {
+        "term": "Collagen",
+        "definition": "A strong triple-coiled helical protein made of two identical chains and one varying chain, interwoven in the ECM to provide structural integrity."
+    },
+    {
+        "term": "Fibronectin",
+        "definition": "A protein that forms insoluble fibers between cells, binding collagen and integrins to facilitate cell-to-cell communication."
+    },
+    {
+        "term": "Integrins",
+        "definition": "Cell receptors that bind to microfilaments to convey messages, enabling cells to adapt and respond to environmental changes."
+    },
+    {
+        "term": "Fibroblast",
+        "definition": "The most common type of stromal cell that secretes specific products to define the ECM’s characteristics and optimize its function."
+    },
+    {
+        "term": "Tumor Microenvironment",
+        "definition": "A highly heterogeneous environment surrounding a tumor, composed of cellular components (e.g., fibroblasts, immune cells) and a non-cellular ECM component."
+},
+{
+"term": "Epidermis",
+"definition": "The outermost layer of the skin on the human body. The term 'epidermis' combines the Ancient Greek prefix epi- ('outer') and derma ('skin'). The epidermis serves as a protective barrier and plays critical roles in hydration and skin cell regeneration."
+},
+{
+"term": "Protection",
+"definition": "The epidermis acts like armor to protect the body from harm, including ultraviolet (UV) radiation, pathogens (bacteria, viruses, fungi, and parasites), and chemicals."
+},
+{
+"term": "Production of New Skin",
+"definition": "New skin cells develop in the bottom layer of the epidermis and move upward through the other layers as they age."
+},
+{
+"term": "Hydration",
+"definition": "The outermost layer of the epidermis helps retain water, keeping the skin hydrated and healthy."
+},
+{
+"term": "Skin Color",
+"definition": "The epidermis contains melanocytes, which produce melanin—a group of pigments that determine skin color and protect against UV radiation."
+},
+{
+"term": "Keratinocytes",
+"definition": "The primary cell type (about 90%) in the epidermis, acting as a barrier against environmental damage."
+},
+{
+"term": "Langerhans Cells",
+"definition": "Antigen-presenting immune cells that capture and process harmful substances such as bacteria and viruses."
+},
+{
+"term": "Melanocytes",
+"definition": "Cells that produce melanin, which determines skin, hair, and eye color and provides UV protection."
+},
+{
+"term": "Merkel Cells",
+"definition": "Found in sensitive areas like fingertips and lips, they are involved in the sense of touch."
+},
+{
+"term": "Epidermis",
+"definition": "Provides a barrier to infection and environmental pathogens."
+},
+{
+"term": "Dermis",
+"definition": "Contains collagen and elastin, supporting the skin’s structure."
+},
+{
+"term": "Hypodermis (Subcutaneous Tissue)",
+"definition": "Insulates and protects the body, stores energy as fat, regulates body temperature, and connects the skin to muscles and bones."
+},
+{
+"term": "Stratum Basale",
+"definition": "The bottom layer where continuous mitosis occurs throughout life."
+},
+{
+"term": "Stratum Spinosum",
+"definition": "A thick layer, particularly in areas like the soles of the feet and palms of the hands."
+},
+{
+"term": "Stratum Granulosum",
+"definition": "Produces and stores granules that act as a waterproof barrier."
+},
+{
+"term": "Stratum Lucidum",
+"definition": "Found only in thick skin areas like the bottoms of feet and palms."
+},
+{
+"term": "Stratum Corneum",
+"definition": "Consists of numerous layers of flattened, dead skin cells that continuously shed."
+},
+{
+"term": "Melanin",
+"definition": "A pigment produced by melanocytes that determines skin, hair, and eye color and protects against UV radiation."
+},
+{
+"term": "Hyperpigmentation",
+"definition": "Dark spots caused by excessive melanin production."
+},
+{
+"term": "Hypopigmentation",
+"definition": "Light spots due to reduced melanin production."
+},
+{
+"term": "Depigmentation",
+"definition": "White spots or patches resulting from an absence of melanin."
+},
+{
+"term": "Eumelanin",
+"definition": "Produces brown and black pigmentation, providing strong UV protection and abundant in darker skin tones."
+},
+{
+"term": "Pheomelanin",
+"definition": "Produces red and yellow pigmentation, less protective against UV radiation, and prevalent in lighter skin tones."
+},
+{
+"term": "Importance of Melanin",
+"definition": "Includes protection against UV radiation, eye protection, skin pigmentation, and prevention of skin cancer."
+},
+{
+"term": "Muscle Tissue",
+"definition": "Specialized tissue composed of muscle fibers (myocytes) characterized by protein filaments such as actin and myosin."
+},
+{
+"term": "Skeletal Muscle",
+"definition": "Voluntary muscles attached to bones, enabling movement."
+},
+{
+"term": "Cardiac Muscle",
+"definition": "Involuntary muscles found in the heart, responsible for pumping blood."
+},
+{
+"term": "Smooth Muscle",
+"definition": "Involuntary muscles found in the walls of internal organs, controlling functions like digestion and blood flow."
+}
+    ];
+
+        let currentCardIndex = 0; // Tracks the current flashcard
+
+        // Function to toggle definition visibility
+        function toggleDefinition() {
+            const definitionElement = document.getElementById("definition");
+            if (definitionElement.style.display === "none" || definitionElement.style.display === "") {
+                definitionElement.style.display = "block";
+            } else {
+                definitionElement.style.display = "none";
+            }
+        }
+
+        // Function to update the flashcard content
+        function updateCard() {
+            const termElement = document.getElementById("term");
+            const definitionElement = document.getElementById("definition");
+
+            termElement.textContent = flashcards[currentCardIndex].term;
+            definitionElement.textContent = flashcards[currentCardIndex].definition;
+            definitionElement.style.display = "none"; // Hide definition by default
+
+            // Update button states
+            document.getElementById("prevBtn").disabled = currentCardIndex === 0;
+            document.getElementById("nextBtn").disabled = currentCardIndex === flashcards.length - 1;
+        }
+
+        // Go to the previous flashcard
+        function prevCard() {
+            if (currentCardIndex > 0) {
+                currentCardIndex--;
+                updateCard();
+            }
+        }
+
+        // Go to the next flashcard
+        function nextCard() {
+            if (currentCardIndex < flashcards.length - 1) {
+                currentCardIndex++;
+                updateCard();
+            }
+        }
+
+        // Initialize the first flashcard
+        updateCard();
+    </script>
+</body>
+</html>
