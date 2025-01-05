@@ -65,10 +65,10 @@
     </style>
 </head>
 <body>
-    <!-- Flashcard Container -->
-    <div class="flashcard" onclick="toggleDefinition()">
-        <div class="term" id="term"></div>
+   <!-- Flashcard Container -->
+    <div class="flashcard" onclick="toggleTerm()">
         <div class="definition" id="definition"></div>
+        <div class="term" id="term"></div>
     </div>
 
     <!-- Navigation Buttons -->
@@ -464,13 +464,17 @@
 
         let currentCardIndex = 0; // Tracks the current flashcard
 
-        // Function to toggle definition visibility
-        function toggleDefinition() {
+        // Function to toggle term visibility
+        function toggleTerm() {
+            const termElement = document.getElementById("term");
             const definitionElement = document.getElementById("definition");
-            if (definitionElement.style.display === "none" || definitionElement.style.display === "") {
-                definitionElement.style.display = "block";
-            } else {
+            
+            if (termElement.style.display === "none" || termElement.style.display === "") {
+                termElement.style.display = "block";
                 definitionElement.style.display = "none";
+            } else {
+                termElement.style.display = "none";
+                definitionElement.style.display = "block";
             }
         }
 
@@ -479,9 +483,12 @@
             const termElement = document.getElementById("term");
             const definitionElement = document.getElementById("definition");
 
-            termElement.textContent = flashcards[currentCardIndex].term;
             definitionElement.textContent = flashcards[currentCardIndex].definition;
-            definitionElement.style.display = "none"; // Hide definition by default
+            termElement.textContent = flashcards[currentCardIndex].term;
+            
+            // Show definition first and hide term
+            definitionElement.style.display = "block";
+            termElement.style.display = "none";
 
             // Update button states
             document.getElementById("prevBtn").disabled = currentCardIndex === 0;
